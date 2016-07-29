@@ -1,3 +1,12 @@
-FROM node:4-onbuild
+FROM: node:argon
+
+RUN mkdir -p /usr/src/app
+
+COPY . /usr/src/app
+
+RUN ./usr/src/app/npm install
+
 # replace this with your application's default port
-EXPOSE 8888
+EXPOSE 8081
+
+CMD['npm', 'start']

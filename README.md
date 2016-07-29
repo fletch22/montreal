@@ -26,4 +26,14 @@ Set up:
 
 8. execute "bundle install"
 
-9. 
+9. If Ubuntu says it has updates run:
+	
+	sudo apt-get dist-upgrade
+
+10. The f22deployer user should have been created but a config value needs setting:
+
+	a: Find /etc/ssh/sshd_config
+
+	b: Add the following line:
+
+		AllowUsers f22deployer

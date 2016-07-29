@@ -1,0 +1,4 @@
+PasswordAuthentication no
+UserKnownHostsFile /dev/null
+StrictHostKeyChecking no
+IdentityFile ~/.ssh/remote-deploy

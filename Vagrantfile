@@ -6,6 +6,10 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
+
+  # config.ssh.private_key_path = "~/.ssh/id_rsa"
+  # config.ssh.forward_agent = true
+
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
@@ -43,13 +47,13 @@ Vagrant.configure("2") do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
+  config.vm.provider "virtualbox" do |vb|
+    # Display the VirtualBox GUI when booting the machine
+    # vb.gui = true
+  
+    # Customize the amount of memory on the VM:
+    vb.memory = "1024"
+  end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -69,6 +73,6 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
 
-  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/mac_id_rsa.pub"
+  config.vm.provision "file", source: "~/.ssh/remote-deploy.pub", destination: "/vagrant/configure-vagrant/remote-deploy.pub"
   config.vm.provision "shell", path: "configure-vagrant/ubuntu-provisioning.sh"
 end
