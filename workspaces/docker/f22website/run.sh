@@ -1,1 +1,0 @@
-sudo docker run -it --rm --name fletch-22-website f22website

@@ -1,1 +1,0 @@
-docker build -t f22website /home/f22/staging

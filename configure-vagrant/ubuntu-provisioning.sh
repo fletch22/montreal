@@ -47,13 +47,19 @@ source /vagrant/configure-vagrant/create-u-and-g.sh
 # printf "\nAbout to install GEM bundler ..."
 # gem install bundler
 
-printf '\nAbout to install nodejs ...'
-sudo apt-get install node -y
 
-printf '\nAbout to install npm ...'
-sudo apt-get install npm -y
+#=========================================
+# Install and Configure NodeJs
+#
+#=========================================
 
-printf '\nAbout to install nodejs-legacy ...'
-sudo apt-get install nodejs-legacy -y
+# printf '\nAbout to install nodejs ...'
+# sudo apt-get install node -y
+
+# printf '\nAbout to install npm ...'
+# sudo apt-get install npm -y
+
+# printf '\nAbout to install nodejs-legacy ...'
+# sudo apt-get install nodejs-legacy -y
 
 printf "Provisioning completed.\n"

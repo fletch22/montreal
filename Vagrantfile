@@ -10,6 +10,12 @@ Vagrant.configure("2") do |config|
   # config.ssh.private_key_path = "~/.ssh/id_rsa"
   # config.ssh.forward_agent = true
 
+  # F22Website NodeJs Container
+  config.vm.network "forwarded_port", guest: 58888, host: 58888
+
+  # Nexus Container
+  config.vm.network "forwarded_port", guest: 58081, host: 58081 
+
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
