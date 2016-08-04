@@ -16,6 +16,9 @@ Vagrant.configure("2") do |config|
   # Nexus Container
   config.vm.network "forwarded_port", guest: 58081, host: 58081 
 
+  # Consul Container
+  config.vm.network "forwarded_port", guest: 8500, host: 8500
+
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.

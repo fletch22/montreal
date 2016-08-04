@@ -22,7 +22,7 @@ Notes
 
 	b: Execute the docker command.
 
-		The docker event& should output some information about the run attempt. You'll see a container ID 
+		The docker events& should output some information about the run attempt. You'll see a container ID 
 		at the beginning.
 
 	c: Take the container id and run the following from the command line:
@@ -58,6 +58,12 @@ Notes
 * Get Dir Size:
 
 	du -hs <folder path>
+
+* To get the ip of the network interface that connects to the Internet:
+
+	(8.8.8.8 is Googles DNS server address).
+
+	ip route get 8.8.8.8 | awk '{print $NF; exit}'
 
 
 

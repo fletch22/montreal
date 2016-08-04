@@ -62,4 +62,7 @@ source /vagrant/configure-vagrant/create-u-and-g.sh
 # printf '\nAbout to install nodejs-legacy ...'
 # sudo apt-get install nodejs-legacy -y
 
+printf "\nAbout to build and run Nexus container ..."
+source /vagrant/workspaces/docker/nexus/build-and-run.sh
+
 printf "Provisioning completed.\n"
