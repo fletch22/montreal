@@ -30,7 +30,10 @@ sudo apt-get install docker-engine -y
 printf "\nAbout to apt-get upgrade ..."
 apt-get upgrade -y
 
-printf "\nAbout to add docker group ..."
+printf "\nAbout to add 'docker' group ..."
 sudo groupadd docker
+
+printf "\nAbout to install Docker Compose ..."
+source /vagrant/workspaces/configure-vagrant/install-docker-compose.sh
 
 printf '\nFinished adding docker.\n'

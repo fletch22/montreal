@@ -1,0 +1,68 @@
+version: '2'
+services:
+    f22website:
+      container_name: f22website-prod
+      build: .
+      image: f22website
+      ports: 
+       - "58888:8888"
+      depends_on:
+       - registrator
+      dns: 
+       - ${BRIDGE_IP}
+       - 8.8.8.8
+      dns_search: service.consul
+    registrator:
+      image: gliderlabs/registrator:latest
+      command:
+       - consul://${PUBLIC_IP}:8500
+      container_name: registrator
+      network_mode: "host"
+      volumes: 
+        - /var/run/docker.sock:/tmp/docker.sock
+      depends_on: 
+        - consul-server
+      dns: 
+       - ${BRIDGE_IP}
+       - 8.8.8.8
+      dns_search: service.consul
+    consul-server:
+      image: consul
+      container_name: consul-server
+      ports:
+       - "${BRIDGE_IP}:53:8600/tcp" 
+       - "${BRIDGE_IP}:53:8600/udp"
+       - "${PUBLIC_IP}:8500:8500"
+      environment: 
+      - 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}'
+      network_mode: "bridge"
+      volumes: 
+       - ${CONSUL_SHARED_DIR}:/consul/data 
+      command:
+       - agent 
+       - -server
+       - -advertise=${PUBLIC_IP}
+       - -bootstrap 
+       - -ui 
+       - -client=0.0.0.0
+    nginx: 
+      container_name: nginx-f22
+      build:
+        context: ../nginx
+        dockerfile: dockerfile
+        args:
+         -  -t
+         - nginx-f22
+         - .
+      volumes: 
+       - ${NGINX_SHARED_DIR}:/usr/share/nginx/html:ro
+      image: nginx-f22
+      network_mode: "host"
+      depends_on:
+        - registrator
+      ports:
+        - "80:80"
+      dns: 
+       - ${BRIDGE_IP}
+       - 8.8.8.8
+      dns_search: service.consul
