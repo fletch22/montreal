@@ -55,7 +55,8 @@ services:
          - nginx-f22
          - .
       volumes: 
-       - ${NGINX_SHARED_DIR}:/usr/share/nginx/html:ro
+       - ${NGINX_SHARED_DIR}:/usr/share/nginx/
+       - ${NGINX_CONFIG_DIR}:/usr/share/nginx/conf
       image: nginx-f22
       network_mode: "host"
       depends_on:
@@ -66,3 +67,10 @@ services:
        - ${BRIDGE_IP}
        - 8.8.8.8
       dns_search: service.consul
+      entrypoint: nginx
+      command: 
+        - -g
+        - "daemon off;"
+        - -c
+        - /usr/share/nginx/conf/nginx.conf
+

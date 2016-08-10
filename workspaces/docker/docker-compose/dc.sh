@@ -1,8 +1,9 @@
 #!/bin/bash
 
+DOCKER_SHARE_DIR=/var/docker-data
 
 # Consul Setup
-export CONSUL_SHARED_DIR=/var/docker-data/consul/server-1-data
+export CONSUL_SHARED_DIR=$DOCKER_SHARE_DIR/consul/server-1-data
 
 # Consul IP
 export PUBLIC_IP=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
@@ -12,19 +13,26 @@ sudo mkdir -p $CONSUL_SHARED_DIR
 sudo chown -R 100:1000 $CONSUL_SHARED_DIR
 
 # nginx Setup
-export NGINX_SHARED_DIR=/var/docker-data/nginx/content
+export NGINX_SHARED_DIR=$DOCKER_SHARE_DIR/nginx
 
-sudo rm -rf $NGINX_SHARED_DIR/index.html
-sudo mkdir -p $NGINX_SHARED_DIR
+NGINX_CONTENT_DIR=$NGINX_SHARED_DIR/html
 
-sudo cp ../nginx/index.html $NGINX_SHARED_DIR
+sudo rm -rf $NGINX_CONTENT_DIR/index.html
+sudo mkdir -p $NGINX_CONTENT_DIR
 
-export NGINX_CONF_DIR=/var/docker-data/nginx/content
+sudo cp ../nginx/index.html $NGINX_CONTENT_DIR
 
-sudo rm -rf $NGINX_CONF_DIR/nginx.conf
-sudo mkdir -p $NGINX_CONF_DIR
+export NGINX_CONFIG_DIR=$NGINX_SHARED_DIR/conf
+sudo mkdir -p $NGINX_CONFIG_DIR
 
-sudo cp ../nginx/nginx.conf $NGINX_CONF_DIR
+rm -rf $NGINX_CONFIG_DIR/f22.conf
+sudo cp ../nginx/conf/f22.conf $NGINX_CONFIG_DIR
+
+rm -rf $NGINX_CONFIG_DIR/nginx.conf
+sudo cp ../nginx/conf/nginx.conf $NGINX_CONFIG_DIR
+
+# Chown with the userid:groupId of the container's nginx user.
+sudo chown -R 100:101 $NGINX_CONFIG_DIR
 
 echo "Using BRIDGE_IP $BRIDGE_IP"
 
