@@ -1,4 +1,4 @@
-# -*- mode: ruby -*-
+ # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
@@ -10,6 +10,8 @@ Vagrant.configure("2") do |config|
   # config.ssh.private_key_path = "~/.ssh/id_rsa"
   # config.ssh.forward_agent = true
 
+  config.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
+
   # F22Website NodeJs Container
   config.vm.network "forwarded_port", guest: 58888, host: 58888
 
@@ -17,10 +19,16 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 80, host: 50080
 
   # Nexus Container
-  config.vm.network "forwarded_port", guest: 58081, host: 58081 
+  config.vm.network "forwarded_port", guest: 58081, host: 58081
 
   # Consul Container
   config.vm.network "forwarded_port", guest: 8500, host: 8500
+
+  config.vm.network "forwarded_port", guest: 53, host: 53, host_ip: "192.168.1.154"
+
+  # config.vm.network "forwarded_port", guest: 6379, host: 6379
+  # config.vm.network "forwarded_port", guest: 27017, host: 27017
+  
 
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
@@ -65,6 +73,9 @@ Vagrant.configure("2") do |config|
   
     # Customize the amount of memory on the VM:
     vb.memory = "4096"
+
+    # http://askubuntu.com/questions/238040/how-do-i-fix-name-service-for-vagrant-client
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
   #
   # View the documentation for the provider you are using for more

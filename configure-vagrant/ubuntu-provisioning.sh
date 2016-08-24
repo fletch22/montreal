@@ -13,6 +13,9 @@ source /vagrant/configure-vagrant/install-docker.sh
 printf "\nAbout to add user 'vagrant' to 'docker' group ..."
 sudo usermod -aG docker vagrant
 
+printf "\nAbout to install Docker-Compose"
+source /vagrant/configure-vagrant/install-docker-compose.sh
+
 # Required by user creation commands
 printf '\nInstalling pcregrep'
 sudo apt-get install pcregrep

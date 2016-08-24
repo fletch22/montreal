@@ -45,15 +45,10 @@ services:
        - -bootstrap 
        - -ui 
        - -client=0.0.0.0
+       - -recursor=8.8.8.8
     nginx: 
       container_name: nginx-f22
-      build:
-        context: ../nginx
-        dockerfile: dockerfile
-        args:
-         -  -t
-         - nginx-f22
-         - .
+      build: ../nginx
       volumes: 
        - ${NGINX_SHARED_DIR}:/usr/share/nginx/
        - ${NGINX_CONFIG_DIR}:/usr/share/nginx/conf
