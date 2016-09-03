@@ -23,5 +23,16 @@ NEXUS_DATA_DIR=/var/docker-data/nexus/nexus-data
 sudo mkdir -p $NEXUS_DATA_DIR
 sudo chown -R 200:200 $NEXUS_DATA_DIR
 
-docker run -td -p 58081:8081 -v $NEXUS_DATA_DIR:/nexus-data --restart=always --name nexus sonatype/nexus3
+docker stop nexus-data
+docker rm nexus-data
+
+docker stop nexus
+docker rm nexus
+
+docker create -v /nexus-data --name nexus-data --restart=always sonatype/nexus3 /bin/true
+docker start nexus-data
+
+# docker run -td -p 58081:8081 -v $NEXUS_DATA_DIR:/nexus-data --restart=always --name nexus sonatype/nexus3
+docker run -td -p 58081:8081 --volumes-from nexus-data --restart=always --name nexus sonatype/nexus3
+
 

@@ -37,4 +37,6 @@ sudo cp ../nginx/conf/nginx.conf $NGINX_CONFIG_DIR
 # Chown with the userid:groupId of the container's nginx user.
 sudo chown -R 100:101 $NGINX_CONFIG_DIR
 
+export NEXUS_URI=http://$PUBLIC_IP:58081/repository/npm-proxy/
+
 echo "Using BRIDGE_IP $BRIDGE_IP"

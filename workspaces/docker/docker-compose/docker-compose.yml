@@ -2,7 +2,12 @@ version: '2'
 services:
     f22website:
       container_name: f22website-prod
-      build: .
+      mem_limit: 2000000000
+      build: 
+        context: /home/f22/loading-dock/staging/fletch22Website
+        dockerfile: Dockerfile
+        args:
+        - NEXUS_URI=$NEXUS_URI
       image: f22website
       ports: 
        - "58888:8888"

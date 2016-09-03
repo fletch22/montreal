@@ -73,8 +73,8 @@ Vagrant.configure("2") do |config|
     # http://askubuntu.com/questions/238040/how-do-i-fix-name-service-for-vagrant-client
     # vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     # vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  # end
-  #
+  end
+  
   # View the documentation for the provider you are using for more
   # information on available options.
 
