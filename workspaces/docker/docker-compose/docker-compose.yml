@@ -1,14 +1,14 @@
 version: '2'
 services:
-    f22website:
-      container_name: f22website-prod
+    webapp-f22:
+      container_name: webapp-f22
       mem_limit: 2000000000
       build: 
         context: /home/f22/loading-dock/staging/fletch22Website
         dockerfile: Dockerfile
         args:
         - NEXUS_URI=$NEXUS_URI
-      image: f22website
+      image: webapp-f22
       ports: 
        - "58888:8888"
       depends_on:
@@ -18,10 +18,10 @@ services:
        - 8.8.8.8
       dns_search: service.consul
     registrator:
+      container_name: registrator-f22
       image: gliderlabs/registrator:latest
       command:
        - consul://${PUBLIC_IP}:8500
-      container_name: registrator
       network_mode: "host"
       volumes: 
         - /var/run/docker.sock:/tmp/docker.sock
@@ -32,8 +32,8 @@ services:
        - 8.8.8.8
       dns_search: service.consul
     consul-server:
+      container_name: consul-server-f22
       image: consul
-      container_name: consul-server
       ports:
        - "${BRIDGE_IP}:53:8600/tcp" 
        - "${BRIDGE_IP}:53:8600/udp"

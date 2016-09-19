@@ -59,6 +59,14 @@ Vagrant.configure("2") do |config|
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
 
+  # Helps overcome permission errors when we try to create/delete/modify folders/files under
+  # the synced_folder with a non-vagrant user; to make this truly work add the user to the
+  # vagrant *group*.
+  config.vm.synced_folder "./", "/vagrant", id: "vagrant",
+    :owner => "vagrant",
+    :group => "vagrant",
+    :mount_options => ["dmode=775,fmode=775"]
+
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:

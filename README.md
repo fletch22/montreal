@@ -37,3 +37,114 @@ Set up:
 	b: Add the following line:
 
 		AllowUsers f22deployer
+
+## Lifecyle Plan #1
+
+1st Deploy:
+
+	Remove all containers and images
+
+	Run docker volume container create script.
+
+	Run docker-compose.
+
+nth Redeploy
+
+	Data Volumes Reguire No Data Migration:
+
+		Stop and remove docker-compose containers
+
+		Import tarred containers.
+
+		Run docker-compose up.
+
+	Data Volumes Reguire Data Migration:
+
+		At PROD: 
+
+			Stop and tar up data volumes.
+
+			Ship back to development
+
+		At DEV: 
+
+			Test/Develop migration scripts against volumes from prod.
+
+			Package Migration Scripts with Deploy Pod.
+
+			Ship Deploy Pod to PROD
+
+		At PROD: 
+
+			Close to public.
+
+			Stop and remove docker-compose containers
+
+			Import Deploy Pod containers.
+
+			Run docker-compose up.
+
+			Run migration script.
+
+			Open to public.
+
+Periodic Maintenance:
+
+	Type 1 Backup And Restore:
+
+		Backup
+
+			Stop The Container(s)
+
+			Run Docker Export on containers with 
+
+			Back Up Data Containers
+
+				# See https://docs.docker.com/engine/tutorials/dockervolumes/#backup-restore-or-migrate-data-volumes
+
+				Example:
+				docker run --rm --volumes-from dbstore -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /dbdata
+
+			Copy backup to backup location.
+
+			Re-start container(s)
+
+		Restoring
+
+			Create the new container from the image. Perhaps like so:
+
+				docker run -v /dbdata --name dbstore2 ubuntu /bin/bash
+
+			Execute the restore
+
+				docker run --rm --volumes-from dbstore2 -v $(pwd):/backup ubuntu bash -c "cd /dbdata && tar xvf /backup/backup.tar --strip 1"
+
+	Type 2 Backup and Restore:
+
+		Setup: Store volumes on host -- not in containers
+
+		Backup: 
+
+			Turn off consuming guest(s).
+
+			Tar up the folder.
+
+			Restart container
+
+		Restore:
+
+			Stop the container.
+
+			Delete the physical volume
+
+			Recreate the physical volume folder with the backed up one.
+
+
+
+
+
+
+
+
+
+

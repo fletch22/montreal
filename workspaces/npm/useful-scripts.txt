@@ -1,0 +1,3 @@
+Remove all global node modules
+
+	sudo npm ls -gp --depth=0 | awk -F/node_modules/ '{print $2}' | grep -vE '^(npm|)$' | sudo xargs -r npm -g rm

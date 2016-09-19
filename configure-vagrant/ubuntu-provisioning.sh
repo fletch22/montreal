@@ -56,15 +56,23 @@ source /vagrant/configure-vagrant/create-u-and-g.sh
 #
 #=========================================
 
-# printf '\nAbout to install nodejs ...'
-# sudo apt-get install node -y
+printf '\nAbout to install nodejs ...'
+sudo apt-get install nodejs -y
 
-# printf '\nAbout to install npm ...'
-# sudo apt-get install npm -y
+printf '\nAbout to install npm ...'
+sudo apt-get install -y
 
-# printf '\nAbout to install nodejs-legacy ...'
-# sudo apt-get install nodejs-legacy -y
+printf '\nAbout to alias for node ...'
+sudo ln -s /usr/bin/nodejs /usr/bin/node
 
+printf '\nAbout to upgrade npm ...'
+sudo npm i npm@3.10.7 -g
+
+
+#=========================================
+# Install and Configure Nexus
+#
+#=========================================
 printf "\nAbout to build and run Nexus container ..."
 source /vagrant/workspaces/docker/nexus/build-and-run.sh
 

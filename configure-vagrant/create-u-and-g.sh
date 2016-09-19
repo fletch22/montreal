@@ -16,6 +16,10 @@ sudo cp ./f22-sudoer /etc/sudoers.d/f22-sudoer
 sudo chmod 0440 /etc/sudoers.d/f22-sudoer
 sudo rm ./f22-sudoer
 
+# Adds user to vagrant group so user can easily modify files/folders
+# with vagrant *group* permissions.
+sudo usermod -aG vagrant f22
+
 sudo mkdir /home/$CUSER/.ssh
 
 sudo touch /home/$CUSER/.ssh/authorized_keys

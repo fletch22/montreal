@@ -19,20 +19,22 @@ pcregrep -M "$ENTRY" /etc/hosts || printf "$ENTRY" | sudo tee -a  /etc/hosts
 
 NEXUS_DATA_DIR=/var/docker-data/nexus/nexus-data
 
-# sudo rm -rf $NEXUS_DATA_DIR
+sudo rm -rf $NEXUS_DATA_DIR
 sudo mkdir -p $NEXUS_DATA_DIR
 sudo chown -R 200:200 $NEXUS_DATA_DIR
 
-docker stop nexus-data
-docker rm nexus-data
-
 docker stop nexus
 docker rm nexus
+# docker rmi sonatype/nexus3
 
-docker create -v /nexus-data --name nexus-data --restart=always sonatype/nexus3 /bin/true
-docker start nexus-data
+docker run -td -p 58081:8081 --restart=always --name nexus sonatype/nexus:oss
 
-# docker run -td -p 58081:8081 -v $NEXUS_DATA_DIR:/nexus-data --restart=always --name nexus sonatype/nexus3
-docker run -td -p 58081:8081 --volumes-from nexus-data --restart=always --name nexus sonatype/nexus3
+#docker run -td -p 58081:8081 -v $NEXUS_DATA_DIR:/nexus-data --restart=always --name nexus sonatype/nexus3
+
+# docker stop nexus-data
+# docker rm nexus-data
+# docker create -v /nexus-data --name nexus-data --restart=always sonatype/nexus3 /bin/true
+# docker start nexus-data
+# docker run -td -p 58081:8081 --volumes-from nexus-data --restart=always --name nexus sonatype/nexus3
 
 
