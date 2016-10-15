@@ -1,5 +1,15 @@
 README.md
 
+## HOW to install Docker Compose
+
+Step 1: Execute the following command:
+
+	sudo apt-get -y install python-pip
+
+Step 2: Execute the following command:
+
+	sudo pip install docker-compose
+
 ## How to run just one item in Docker Compose
 
 Step : Where 'web' is a container name, execute:

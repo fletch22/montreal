@@ -12,10 +12,10 @@ function nukeAndPaveDir {
 }
 
 function dockerExport {
-	NAME=$1
-	printf "\nAbout to export $NAME ...\n"
-	docker export $NAME > $STAGING_PATH/$NAME.tar
-	printf "\nDone exporting $NAME.\n"
+NAME=$1
+printf "\nAbout to export $NAME ...\n"
+docker export $NAME > $STAGING_PATH/$NAME.tar
+printf "\nDone exporting $NAME.\n"
 }
 
 printf "\n About to remove previous exported containers ...\n"

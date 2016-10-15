@@ -139,6 +139,16 @@ Periodic Maintenance:
 
 			Recreate the physical volume folder with the backed up one.
 
+Useful docker commands:
+
+Remove all containers: 
+
+docker rmi $(docker images -q --filter "dangling=true")
+
+Run a command in a container
+
+sudo docker exec -i -t nginx-f22 /bin/bash
+
 
 
 

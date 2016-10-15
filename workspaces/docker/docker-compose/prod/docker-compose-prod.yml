@@ -1,0 +1,74 @@
+version: '2'
+services:
+    consul-server:
+      container_name: consul-server-f22
+      image: consul
+      ports:
+       - "8500:8500" # Needed to expose to host.
+      expose: # Needed to expose ports to linked containers
+       - "443"
+       - "8300-8600" # Used for speed of development. In future reduce to only necessary ports.
+      environment: 
+      - 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}' # Used when only 1 in cluster.
+      networks:
+        - app_net # Specify IP?
+      command:
+       - agent 
+       - -server
+       - -bootstrap # Used when the first
+       - -ui # Web ui
+       - -client=0.0.0.0 # Ensures that all ports exposed inside container on localhost are shared with all other IPs inside container.
+       - -recursor=8.8.8.8 # Secondary DNS when can't resolve locally. This is Google's DNS.
+    registrator:
+      container_name: registrator-f22
+      image: gliderlabs/registrator:latest
+      networks:
+        - app_net
+      volumes: 
+        - /var/run/docker.sock:/tmp/docker.sock
+      depends_on: 
+        - consul-server
+      links:
+        - consul-server
+      dns: 
+       - consul-server
+       - 8.8.8.8 # When it can't resolve an IP it will use Googles DNS
+      dns_search: service.consul
+      command:
+       - consul://consul-server:8500
+    nginx: 
+      container_name: nginx-f22
+      build: ../../nginx
+      volumes: 
+       - ${NGINX_SHARED_DIR}:/usr/share/nginx/
+       - ${NGINX_CONFIG_DIR}:/usr/share/nginx/conf
+      image: nginx-f22
+      networks:
+        - app_net
+      ports:
+        - "80:80"
+      links:
+        - consul-server
+      dns: 
+        - consul-server
+        - 8.8.8.8
+      dns_search: service.consul
+      entrypoint: nginx
+      command: 
+        - -g
+        - "daemon off;"
+        - -c
+        - /usr/share/nginx/conf/nginx.conf
+
+networks:
+  app_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.238.0/24
+        gateway: 172.16.238.1
+      - subnet: 2001:3984:3989::/64
+        gateway: 2001:3984:3989::1

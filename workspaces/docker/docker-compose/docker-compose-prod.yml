@@ -1,0 +1,39 @@
+version: '2'
+services:
+    consul-server:
+      container_name: consul-server-f22
+      image: consul
+      ports:
+       - "172.16.238.10:53:8600/tcp" 
+       - "172.16.238.10:53:8600/udp"
+       - "${PUBLIC_IP}:8500:8500"
+      environment: 
+      - 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}'
+      networks:
+            app_net:
+                  ipv4_address: 172.16.238.10
+                  ipv6_address: 2001:3984:3989::10
+      volumes: 
+       - $CONSUL_SHARED_DIR:/consul/data 
+      command:
+       - agent 
+       - -server
+       - -bootstrap 
+       - -ui 
+       - -bind=0.0.0.0
+       - -node=first
+       - -syslog
+       - -recursor=8.8.8.8
+
+ networks:
+  app_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.238.0/24
+        gateway: 172.16.238.1
+      - subnet: 2001:3984:3989::/64
+        gateway: 2001:3984:3989::1
