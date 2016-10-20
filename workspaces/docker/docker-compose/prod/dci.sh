@@ -38,4 +38,7 @@ sudo cp ../../nginx/conf/nginx.conf $NGINX_CONFIG_DIR
 sudo chown -R 100:101 $NGINX_CONFIG_DIR
 # END nginx
 
+export NEXUS_URI=http://$PUBLIC_IP:58081/repository/npm-proxy/
+
+echo "Nexus URI: $NEXUS_URI"
 # echo "Using BRIDGE_IP $BRIDGE_IP"

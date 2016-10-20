@@ -15,6 +15,9 @@ Vagrant.configure("2") do |config|
   # F22Website NodeJs Container
   config.vm.network "forwarded_port", guest: 58888, host: 58888
 
+    # F22Website NodeJs Container
+  config.vm.network "forwarded_port", guest: 82, host: 50082
+
   # Nginx Reverse Proxy
   config.vm.network "forwarded_port", guest: 80, host: 50080
 

@@ -37,18 +37,19 @@ services:
       command:
        - consul://consul-server:8500
     nginx: 
+      build: ../../nginx # Assumes Dockerfile
       container_name: nginx-f22
-      build: ../../nginx
-      volumes: 
-       - ${NGINX_SHARED_DIR}:/usr/share/nginx/
-       - ${NGINX_CONFIG_DIR}:/usr/share/nginx/conf
       image: nginx-f22
       networks:
         - app_net
+      volumes: 
+       - ${NGINX_SHARED_DIR}:/usr/share/nginx/
       ports:
         - "80:80"
+        - "82:82"
       links:
         - consul-server
+        - webapp
       dns: 
         - consul-server
         - 8.8.8.8
@@ -59,7 +60,26 @@ services:
         - "daemon off;"
         - -c
         - /usr/share/nginx/conf/nginx.conf
-
+    webapp:
+      build: 
+        context: /home/f22/loading-dock/staging/fletch22Website
+        args:
+        - NEXUS_URI=$NEXUS_URI
+      container_name: webapp-f22
+      image: webapp-f22
+      networks:
+       - app_net
+      mem_limit: 2000000000
+      expose:
+       - "8888"
+      ports: 
+       - "58888:8888"
+      depends_on:
+       - registrator
+      dns: 
+       - consul-server
+       - 8.8.8.8
+      dns_search: service.consul    
 networks:
   app_net:
     driver: bridge
